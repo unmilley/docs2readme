@@ -1,5 +1,8 @@
+#!/usr/bin/env node
+
 import { defineCommand, runMain } from "citty";
 import { resolve } from "node:path";
+import { version } from "../package.json";
 import { CliError } from "./errors";
 import { main } from "./index";
 import { enableVerboseLogging, logger } from "./logger";
@@ -9,7 +12,7 @@ const cwd = process.cwd();
 const command = defineCommand({
   meta: {
     name: "docs2readme",
-    version: "1.0.0",
+    version,
     description: "Generate a complete `README.md` from Markdown documentation.",
   },
 

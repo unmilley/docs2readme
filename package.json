@@ -1,6 +1,6 @@
 {
   "name": "docs2readme",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generate a complete `README.md` from Markdown documentation.",
   "homepage": "https://github.com/unmilley/docs2readme#readme",
   "license": "MIT",
@@ -37,8 +37,8 @@
     "@vitest/coverage-v8": "latest",
     "changelogen": "latest",
     "obuild": "latest",
-    "oxfmt": "^0.59.0",
-    "oxlint": "^1.74.0",
+    "oxfmt": "latest",
+    "oxlint": "latest",
     "typescript": "^6.0.3",
     "vitest": "latest"
   },
