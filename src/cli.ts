@@ -1,31 +1,61 @@
 import { defineCommand, runMain } from "citty";
+import { resolve } from "node:path";
+import { CliError } from "./errors";
+import { main } from "./index";
+import { enableVerboseLogging, logger } from "./logger";
 
-const main = defineCommand({
+const cwd = process.cwd();
+
+const command = defineCommand({
   meta: {
-    name: "hello",
+    name: "docs2readme",
     version: "1.0.0",
-    description: "My Awesome CLI App",
+    description: "Generate a complete `README.md` from Markdown documentation.",
   },
+
   args: {
-    name: {
-      type: "positional",
-      description: "Your name",
-      required: true,
+    docs: {
+      type: "string",
+      alias: ["d"],
+      description: "Documentation directory",
+      default: resolve(cwd, "docs"),
+      valueHint: "./docs",
     },
-    friendly: {
+
+    readme: {
+      type: "string",
+      alias: ["r"],
+      description: "README output file",
+      default: resolve(cwd, "README.md"),
+      valueHint: "./README.md",
+    },
+
+    verbose: {
       type: "boolean",
-      description: "Use friendly greeting",
+      description: "Enable verbose logging",
+      default: false,
     },
   },
-  setup({ args }) {
-    console.log(`now setup ${args.command}`);
-  },
-  cleanup({ args }) {
-    console.log(`now cleanup ${args.command}`);
-  },
-  run({ args }) {
-    console.log(`${args.friendly ? "Hi" : "Greetings"} ${args.name}!`);
+
+  async run({ args }) {
+    if (args.verbose) enableVerboseLogging();
+
+    try {
+      logger.start("Generating README");
+
+      await main({
+        docs: resolve(String(args.docs)),
+        readme: resolve(String(args.readme)),
+      });
+
+      logger.success("README generated successfully");
+    } catch (error) {
+      if (error instanceof CliError) logger.error(error.message);
+      else logger.error(error);
+
+      process.exitCode = 1;
+    }
   },
 });
 
-runMain(main);
+await runMain(command);
