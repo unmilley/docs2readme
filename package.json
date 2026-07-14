@@ -1,0 +1,46 @@
+{
+  "name": "docs2readme",
+  "version": "1.0.0",
+  "description": "Generate a complete `README.md` from Markdown documentation.",
+  "homepage": "https://github.com/unmilley/docs2readme#readme",
+  "license": "MIT",
+  "author": "Alexandr Lyadov <hello@milley.uno> (https://milley.uno/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unmilley/docs2readme.git"
+  },
+  "bin": {
+    "docs2readme": "./dist/cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "build": "obuild",
+    "dev": "vitest dev",
+    "fmt": "oxlint . --fix && oxfmt .",
+    "lint": "oxlint . && oxfmt .",
+    "prepack": "pnpm build",
+    "release": "pnpm test && pnpm build && changelogen --release && npm publish && git push --follow-tags",
+    "test": "pnpm lint && pnpm typecheck && vitest run --coverage",
+    "typecheck": "tsgo --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "citty": "^0.2.2",
+    "consola": "^3.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@typescript/native-preview": "latest",
+    "@vitest/coverage-v8": "latest",
+    "changelogen": "latest",
+    "obuild": "latest",
+    "oxfmt": "^0.59.0",
+    "oxlint": "^1.74.0",
+    "typescript": "^6.0.3",
+    "vitest": "latest"
+  },
+  "packageManager": "pnpm@11.12.0"
+}

@@ -1,0 +1,6 @@
+{
+  "extends": ["./tsconfig.vueuse.json"],
+  "compilerOptions": {
+    "types": ["node"]
+  }
+}
