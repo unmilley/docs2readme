@@ -47,6 +47,12 @@ docs2readme \
   --readme ./README.md
 ```
 
+Skip mode:
+
+```bash
+docs2readme --skip
+```
+
 Verbose mode:
 
 ```bash
@@ -165,6 +171,7 @@ Options:
 
   -d, --docs <directory>     Documentation directory
   -r, --readme <file>        README file
+  -s, --skip                 Skip missing docs files instead of failing
       --verbose              Enable verbose logging
       --help                 Show help
   -v  --version              Show version
