@@ -58,6 +58,7 @@ describe("main()", () => {
     await main({
       docs: "/docs",
       readme: "/README.md",
+      skip: false,
     });
 
     expect(readmeService.readReadme).toHaveBeenCalledWith("/README.md");
@@ -66,19 +67,15 @@ describe("main()", () => {
 
     expect(markdown.parseList).toHaveBeenCalledWith("table");
 
-    expect(docsService.readDocs).toHaveBeenCalledWith("/docs", [
-      {
-        title: "Intro",
-        anchor: "intro",
-      },
-    ]);
+    expect(docsService.readDocs).toHaveBeenCalledWith(
+      "/docs",
+      [{ title: "Intro", anchor: "intro" }],
+      false,
+    );
 
     expect(block.replaceBlock).toHaveBeenCalledOnce();
 
-    expect(readmeService.writeReadme).toHaveBeenCalledWith(
-      "/README.md",
-      "UPDATED README",
-    );
+    expect(readmeService.writeReadme).toHaveBeenCalledWith("/README.md", "UPDATED README");
   });
 
   it("propagates service errors", async () => {
@@ -88,6 +85,7 @@ describe("main()", () => {
       main({
         docs: "/docs",
         readme: "/README.md",
+        skip: false,
       }),
     ).rejects.toThrow("boom");
   });
@@ -105,6 +103,7 @@ describe("main()", () => {
       main({
         docs: "/docs",
         readme: "/README.md",
+        skip: false,
       }),
     ).rejects.toThrow("parse error");
 

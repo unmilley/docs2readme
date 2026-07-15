@@ -12,19 +12,11 @@ function getBlockBounds(
   return { start, end };
 }
 
-export function hasBlock(
-  content: string,
-  startMarker: string,
-  endMarker: string,
-): boolean {
+export function hasBlock(content: string, startMarker: string, endMarker: string): boolean {
   return getBlockBounds(content, startMarker, endMarker) !== null;
 }
 
-export function findBlock(
-  content: string,
-  startMarker: string,
-  endMarker: string,
-): string {
+export function findBlock(content: string, startMarker: string, endMarker: string): string {
   const bounds = getBlockBounds(content, startMarker, endMarker);
   if (!bounds) return "";
 

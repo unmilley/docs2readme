@@ -4,7 +4,11 @@ import { CliError } from "../errors";
 import { logger } from "../logger";
 import { anchorToFilename, type ListItem } from "../utils/markdown";
 
-export async function readDocs(docsDir: string, list: readonly ListItem[]): Promise<string> {
+export async function readDocs(
+  docsDir: string,
+  list: readonly ListItem[],
+  isSkip: boolean,
+): Promise<string> {
   logger.debug(`Scanning "${docsDir}"`);
 
   const availableFiles = await getAvailableFiles(docsDir);
@@ -13,11 +17,11 @@ export async function readDocs(docsDir: string, list: readonly ListItem[]): Prom
     list.map(async ({ anchor }) => {
       const filename = anchorToFilename(anchor);
 
-      ensureFileExists(availableFiles, filename);
+      if (!isSkip) ensureFileExists(availableFiles, filename);
 
       logger.debug(`Reading "${filename}"`);
 
-      return readDoc(docsDir, filename);
+      return readDoc(docsDir, filename, isSkip);
     }),
   );
 
@@ -38,10 +42,11 @@ async function getAvailableFiles(docsDir: string): Promise<Set<string>> {
   }
 }
 
-async function readDoc(docsDir: string, filename: string): Promise<string> {
+async function readDoc(docsDir: string, filename: string, isSkip: boolean): Promise<string> {
   try {
     return await readFile(join(docsDir, filename), "utf8");
   } catch (error) {
+    if (isSkip) return "";
     throw new CliError(`Failed to read "${filename}".`, {
       cause: error,
     });

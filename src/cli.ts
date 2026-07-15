@@ -33,6 +33,13 @@ const command = defineCommand({
       valueHint: "./README.md",
     },
 
+    skip: {
+      type: "boolean",
+      description: "Skip the check for the document's existence",
+      default: false,
+      alias: ["s"],
+    },
+
     verbose: {
       type: "boolean",
       description: "Enable verbose logging",
@@ -49,6 +56,7 @@ const command = defineCommand({
       await main({
         docs: resolve(String(args.docs)),
         readme: resolve(String(args.readme)),
+        skip: args.skip,
       });
 
       logger.success("README generated successfully");

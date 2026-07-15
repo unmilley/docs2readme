@@ -9,9 +9,10 @@ import { parseList } from "./utils/markdown";
 export interface MainArgs {
   docs: string;
   readme: string;
+  skip: boolean;
 }
 
-export async function main({ docs, readme }: MainArgs): Promise<void> {
+export async function main({ docs, readme, skip }: MainArgs): Promise<void> {
   logger.start("Reading README");
 
   const readmeContent = await readReadme(readme);
@@ -20,11 +21,7 @@ export async function main({ docs, readme }: MainArgs): Promise<void> {
 
   logger.debug("Searching documentation table");
 
-  const table = findBlock(
-    readmeContent,
-    TABLE_MARKERS.start,
-    TABLE_MARKERS.end,
-  );
+  const table = findBlock(readmeContent, TABLE_MARKERS.start, TABLE_MARKERS.end);
 
   invariant(table.length > 0, "Documentation table not found");
 
@@ -36,16 +33,11 @@ export async function main({ docs, readme }: MainArgs): Promise<void> {
 
   logger.start("Reading documentation");
 
-  const docsContent = await readDocs(docs, list);
+  const docsContent = await readDocs(docs, list, skip);
 
   logger.start("Updating README");
 
-  const output = replaceBlock(
-    readmeContent,
-    DOCS_MARKERS.start,
-    DOCS_MARKERS.end,
-    docsContent,
-  );
+  const output = replaceBlock(readmeContent, DOCS_MARKERS.start, DOCS_MARKERS.end, docsContent);
 
   await writeReadme(readme, output);
 
